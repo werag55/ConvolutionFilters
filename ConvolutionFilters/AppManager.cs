@@ -2,13 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ConvolutionFilters
 {
+    public enum Area
+    {
+        Whole, 
+        Circular
+    }
     public class AppManager
     {
         int imageWidth, imageHeight;
+        int circleX = -1, circleY = -1;
+        int radius = 1;
+        public Area area { get; private set; } = Area.Whole;
         ConvolutionFilter currentFilter;
         float filterShift;
         float filterDenom;
@@ -79,11 +88,33 @@ namespace ConvolutionFilters
                 histogram.Clear();
         }
 
+        private void CalculateHistograms()
+        {
+            foreach (var histogram in histograms)
+                histogram.CalculateHistogram(filteredImage);
+        }
+
         private void ApplyFilter()
         {
             ClearHistograms();
-            filteredImage = currentFilter.ApplyFilter(originalImage,
-                filterShift, filterDenom, histograms);
+
+            switch (area)
+            {
+                case Area.Whole:
+                    filteredImage = currentFilter.ApplyFilter(originalImage,
+                        filterShift, filterDenom, histograms);
+                    break;
+                case Area.Circular:
+                    if (circleX != -1 && circleY != -1)
+                        filteredImage = currentFilter.ApplyCircularFilter(originalImage, circleX, circleY, radius,
+                            filterShift, filterDenom, histograms);
+                    else
+                    {
+                        filteredImage = originalImage;
+                        CalculateHistograms();
+                    }
+                    break;
+            }
         }
 
         public void SetImage(string? newImagePath = null)
@@ -96,6 +127,7 @@ namespace ConvolutionFilters
 
         public void SetFilter(string filter)
         {
+            filter = Regex.Replace(filter, "[&]", "");
             currentFilter = filters.Where(f => f.filterName == filter).First();
 
             if (isDenomAuto)
@@ -138,6 +170,26 @@ namespace ConvolutionFilters
             }
             else
                 filterDenom = 1;
+        }
+
+        public void SetFilterArea(Area a)
+        {
+            area = a;
+            ApplyFilter();
+        }
+
+        public void SetCircleCenter(int x, int y)
+        {
+            circleX = x;
+            circleY = y;
+
+            ApplyFilter();
+        }
+
+        public void SetCircleRadius(int r)
+        {
+            radius = r;
+            ApplyFilter();
         }
     }
 }

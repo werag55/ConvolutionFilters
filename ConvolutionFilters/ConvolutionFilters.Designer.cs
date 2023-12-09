@@ -31,6 +31,7 @@
             menuStrip = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             chooseImageToolStripMenuItem = new ToolStripMenuItem();
+            saveImageToolStripMenuItem = new ToolStripMenuItem();
             statusStrip = new StatusStrip();
             mainTableLayoutPanel = new TableLayoutPanel();
             pictureBox = new PictureBox();
@@ -104,7 +105,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { chooseImageToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { chooseImageToolStripMenuItem, saveImageToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(54, 29);
             fileToolStripMenuItem.Text = "File";
@@ -116,12 +117,19 @@
             chooseImageToolStripMenuItem.Text = "Choose image";
             chooseImageToolStripMenuItem.Click += chooseImageToolStripMenuItem_Click;
             // 
+            // saveImageToolStripMenuItem
+            // 
+            saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
+            saveImageToolStripMenuItem.Size = new Size(228, 34);
+            saveImageToolStripMenuItem.Text = "Save image";
+            saveImageToolStripMenuItem.Click += saveImageToolStripMenuItem_Click;
+            // 
             // statusStrip
             // 
             statusStrip.ImageScalingSize = new Size(24, 24);
-            statusStrip.Location = new Point(0, 889);
+            statusStrip.Location = new Point(0, 883);
             statusStrip.Name = "statusStrip";
-            statusStrip.Size = new Size(1758, 22);
+            statusStrip.Size = new Size(1758, 28);
             statusStrip.TabIndex = 1;
             statusStrip.Text = "statusStrip";
             // 
@@ -139,7 +147,7 @@
             mainTableLayoutPanel.Name = "mainTableLayoutPanel";
             mainTableLayoutPanel.RowCount = 1;
             mainTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            mainTableLayoutPanel.Size = new Size(1758, 856);
+            mainTableLayoutPanel.Size = new Size(1758, 850);
             mainTableLayoutPanel.TabIndex = 2;
             // 
             // pictureBox
@@ -147,10 +155,12 @@
             pictureBox.Dock = DockStyle.Fill;
             pictureBox.Location = new Point(3, 3);
             pictureBox.Name = "pictureBox";
-            pictureBox.Size = new Size(850, 850);
+            pictureBox.Size = new Size(850, 844);
             pictureBox.TabIndex = 0;
             pictureBox.TabStop = false;
             pictureBox.Paint += pictureBox_Paint;
+            pictureBox.MouseLeave += pictureBox_MouseLeave;
+            pictureBox.MouseMove += pictureBox_MouseMove;
             // 
             // histogramsTableLayoutPanel
             // 
@@ -167,16 +177,16 @@
             histogramsTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             histogramsTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             histogramsTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            histogramsTableLayoutPanel.Size = new Size(424, 850);
+            histogramsTableLayoutPanel.Size = new Size(424, 844);
             histogramsTableLayoutPanel.TabIndex = 1;
             // 
             // blueHistPictureBox
             // 
             blueHistPictureBox.BackColor = Color.White;
             blueHistPictureBox.Dock = DockStyle.Fill;
-            blueHistPictureBox.Location = new Point(3, 427);
+            blueHistPictureBox.Location = new Point(3, 425);
             blueHistPictureBox.Name = "blueHistPictureBox";
-            blueHistPictureBox.Size = new Size(418, 206);
+            blueHistPictureBox.Size = new Size(418, 205);
             blueHistPictureBox.TabIndex = 20;
             blueHistPictureBox.TabStop = false;
             blueHistPictureBox.Paint += blueHistPictureBox_Paint;
@@ -185,9 +195,9 @@
             // 
             greenHistPictureBox.BackColor = Color.White;
             greenHistPictureBox.Dock = DockStyle.Fill;
-            greenHistPictureBox.Location = new Point(3, 215);
+            greenHistPictureBox.Location = new Point(3, 214);
             greenHistPictureBox.Name = "greenHistPictureBox";
-            greenHistPictureBox.Size = new Size(418, 206);
+            greenHistPictureBox.Size = new Size(418, 205);
             greenHistPictureBox.TabIndex = 19;
             greenHistPictureBox.TabStop = false;
             greenHistPictureBox.Paint += greenHistPictureBox_Paint;
@@ -198,7 +208,7 @@
             redHistPictureBox.Dock = DockStyle.Fill;
             redHistPictureBox.Location = new Point(3, 3);
             redHistPictureBox.Name = "redHistPictureBox";
-            redHistPictureBox.Size = new Size(418, 206);
+            redHistPictureBox.Size = new Size(418, 205);
             redHistPictureBox.TabIndex = 18;
             redHistPictureBox.TabStop = false;
             redHistPictureBox.Paint += redHistPictureBox_Paint;
@@ -216,7 +226,7 @@
             parametersTableLayoutPanel1.RowStyles.Add(new RowStyle());
             parametersTableLayoutPanel1.RowStyles.Add(new RowStyle());
             parametersTableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            parametersTableLayoutPanel1.Size = new Size(466, 850);
+            parametersTableLayoutPanel1.Size = new Size(466, 844);
             parametersTableLayoutPanel1.TabIndex = 2;
             // 
             // filterChoiceGroupBox
@@ -427,7 +437,7 @@
             IdentityRadioButton.Size = new Size(97, 29);
             IdentityRadioButton.TabIndex = 11;
             IdentityRadioButton.TabStop = true;
-            IdentityRadioButton.Text = "Identity";
+            IdentityRadioButton.Text = "&Identity";
             IdentityRadioButton.UseVisualStyleBackColor = true;
             IdentityRadioButton.CheckedChanged += filterChanged;
             // 
@@ -438,7 +448,7 @@
             blurRadioButton.Name = "blurRadioButton";
             blurRadioButton.Size = new Size(67, 29);
             blurRadioButton.TabIndex = 10;
-            blurRadioButton.Text = "Blur";
+            blurRadioButton.Text = "&Blur";
             blurRadioButton.UseVisualStyleBackColor = true;
             blurRadioButton.CheckedChanged += filterChanged;
             // 
@@ -449,7 +459,7 @@
             sharpenRadioButton.Name = "sharpenRadioButton";
             sharpenRadioButton.Size = new Size(102, 29);
             sharpenRadioButton.TabIndex = 9;
-            sharpenRadioButton.Text = "Sharpen";
+            sharpenRadioButton.Text = "&Sharpen";
             sharpenRadioButton.UseVisualStyleBackColor = true;
             sharpenRadioButton.CheckedChanged += filterChanged;
             // 
@@ -460,7 +470,7 @@
             reliefRadioButton.Name = "reliefRadioButton";
             reliefRadioButton.Size = new Size(79, 29);
             reliefRadioButton.TabIndex = 8;
-            reliefRadioButton.Text = "Relief";
+            reliefRadioButton.Text = "&Relief";
             reliefRadioButton.UseVisualStyleBackColor = true;
             reliefRadioButton.CheckedChanged += filterChanged;
             // 
@@ -471,7 +481,7 @@
             edgeDetectionRadioButton.Name = "edgeDetectionRadioButton";
             edgeDetectionRadioButton.Size = new Size(164, 29);
             edgeDetectionRadioButton.TabIndex = 7;
-            edgeDetectionRadioButton.Text = "Edges detection";
+            edgeDetectionRadioButton.Text = "&Edges detection";
             edgeDetectionRadioButton.UseVisualStyleBackColor = true;
             edgeDetectionRadioButton.CheckedChanged += filterChanged;
             // 
@@ -482,7 +492,7 @@
             customRadioButton.Name = "customRadioButton";
             customRadioButton.Size = new Size(99, 29);
             customRadioButton.TabIndex = 6;
-            customRadioButton.Text = "Custom";
+            customRadioButton.Text = "&Custom";
             customRadioButton.UseVisualStyleBackColor = true;
             customRadioButton.CheckedChanged += customFilterChanged;
             // 
@@ -530,7 +540,7 @@
             // 
             brushRadiusTrackBar.Enabled = false;
             brushRadiusTrackBar.Location = new Point(21, 100);
-            brushRadiusTrackBar.Maximum = 100;
+            brushRadiusTrackBar.Maximum = 500;
             brushRadiusTrackBar.Minimum = 1;
             brushRadiusTrackBar.Name = "brushRadiusTrackBar";
             brushRadiusTrackBar.Size = new Size(344, 69);
@@ -559,10 +569,14 @@
             Controls.Add(statusStrip);
             Controls.Add(menuStrip);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            KeyPreview = true;
             MainMenuStrip = menuStrip;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "ConvolutionFilters";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "ConvolutionFilters";
+            KeyDown += ConvolutionFilters_KeyDown;
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
             mainTableLayoutPanel.ResumeLayout(false);
@@ -636,5 +650,6 @@
         private NumericUpDown shiftNumericUpDown;
         private Button customButton;
         private ToolStripMenuItem chooseImageToolStripMenuItem;
+        private ToolStripMenuItem saveImageToolStripMenuItem;
     }
 }

@@ -1,10 +1,14 @@
+using System.Windows.Forms;
+
 namespace ConvolutionFilters
 {
     public partial class ConvolutionFilters : Form
     {
         AppManager appManager;
         string prevValue = "";
-        private ErrorProvider errorProvider = new();
+        ErrorProvider errorProvider = new();
+        bool skipMouseLeave = false;
+
         public ConvolutionFilters()
         {
             InitializeComponent();
@@ -111,7 +115,7 @@ namespace ConvolutionFilters
         #endregion
         #endregion
 
-        #region Menu (ImageChoice)
+        #region Menu
         private void chooseImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string dir = Application.StartupPath;
@@ -131,9 +135,50 @@ namespace ConvolutionFilters
             }
         }
 
+        private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "JPEG files|*.jpg;*.jpeg|All files|*.*";
+                saveFileDialog.Title = "Save Image";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    Bitmap imageToSave = new Bitmap(pictureBox.Width, pictureBox.Height);
+                    using (Graphics g = Graphics.FromImage(imageToSave))
+                    {
+                        g.DrawImage(appManager.filteredImage.Bitmap, Point.Empty);
+                    }
+                    imageToSave.Save(saveFileDialog.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    imageToSave.Dispose();
+                }
+            }
+        }
+
         #endregion
 
-        #region BrushRadius
+        #region CircularBrush
+
+        private void pictureBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (appManager.area == Area.Circular)
+            {
+                Point p = ((PictureBox)sender).PointToClient(MousePosition);
+                appManager.SetCircleCenter(p.X, p.Y);
+                Refresh();
+            }
+        }
+
+        private void pictureBox_MouseLeave(object sender, EventArgs e)
+        {
+            if (appManager.area == Area.Circular && !skipMouseLeave)
+            {
+                appManager.SetCircleCenter(-1, -1);
+                Refresh();
+            }
+
+            skipMouseLeave = false;
+        }
 
         private void brushRadioButton_CheckedChanged(object sender, EventArgs e)
         {
@@ -141,12 +186,18 @@ namespace ConvolutionFilters
             {
                 brushRadiusTrackBar.Enabled = true;
                 brushRadiusTextBox.Enabled = true;
+
+                appManager.SetFilterArea(Area.Circular);
             }
             else
             {
                 brushRadiusTrackBar.Enabled = false;
                 brushRadiusTextBox.Enabled = false;
+
+                appManager.SetFilterArea(Area.Whole);
             }
+
+            Refresh();
         }
 
         #region TextBox
@@ -201,6 +252,7 @@ namespace ConvolutionFilters
         {
             int result = int.Parse(brushRadiusTextBox.Text.ToString());
             brushRadiusTrackBar.Value = result;
+            appManager.SetCircleRadius(result);
 
             Refresh();
         }
@@ -211,10 +263,43 @@ namespace ConvolutionFilters
         {
             int result = (int)brushRadiusTrackBar.Value;
             brushRadiusTextBox.Text = result.ToString();
+            appManager.SetCircleRadius(result);
 
             Refresh();
         }
 
         #endregion
+
+        private void ConvolutionFilters_KeyDown(object sender, KeyEventArgs e)
+        {
+            skipMouseLeave = true;
+
+            if (brushRadioButton.Checked)
+            {
+                if ((e.Control && e.Shift && e.KeyCode == Keys.Oemplus)
+                    || (e.Control && e.KeyCode == Keys.Add))
+                {
+                    if (brushRadiusTrackBar.Value < brushRadiusTrackBar.Maximum)
+                    {
+                        brushRadiusTrackBar.Value += 1;
+                        brushRadiusTrackBar_Scroll(this, EventArgs.Empty);
+                    }
+                }
+
+                if ((e.Control && e.Shift && e.KeyCode == Keys.OemMinus)
+                    || (e.Control && e.KeyCode == Keys.Subtract))
+                {
+                    if (brushRadiusTrackBar.Value > brushRadiusTrackBar.Minimum)
+                    {
+                        brushRadiusTrackBar.Value -= 1;
+                        brushRadiusTrackBar_Scroll(this, EventArgs.Empty);
+                    }
+                }
+            }
+
+            if (e.Control && e.KeyCode == Keys.S)
+                saveImageToolStripMenuItem_Click(sender, new EventArgs());
+
+        }
     }
 }
