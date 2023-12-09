@@ -30,6 +30,7 @@
         {
             menuStrip = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
+            chooseImageToolStripMenuItem = new ToolStripMenuItem();
             statusStrip = new StatusStrip();
             mainTableLayoutPanel = new TableLayoutPanel();
             pictureBox = new PictureBox();
@@ -62,11 +63,10 @@
             edgeDetectionRadioButton = new RadioButton();
             customRadioButton = new RadioButton();
             filterAreaGroupBox = new GroupBox();
-            brushRradioButton = new RadioButton();
-            textBox1 = new TextBox();
+            brushRadioButton = new RadioButton();
+            brushRadiusTextBox = new TextBox();
             brushRadiusTrackBar = new TrackBar();
             wholeAreaRadioButton = new RadioButton();
-            chooseImageToolStripMenuItem = new ToolStripMenuItem();
             menuStrip.SuspendLayout();
             mainTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
@@ -108,6 +108,13 @@
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(54, 29);
             fileToolStripMenuItem.Text = "File";
+            // 
+            // chooseImageToolStripMenuItem
+            // 
+            chooseImageToolStripMenuItem.Name = "chooseImageToolStripMenuItem";
+            chooseImageToolStripMenuItem.Size = new Size(228, 34);
+            chooseImageToolStripMenuItem.Text = "Choose image";
+            chooseImageToolStripMenuItem.Click += chooseImageToolStripMenuItem_Click;
             // 
             // statusStrip
             // 
@@ -482,8 +489,8 @@
             // filterAreaGroupBox
             // 
             filterAreaGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            filterAreaGroupBox.Controls.Add(brushRradioButton);
-            filterAreaGroupBox.Controls.Add(textBox1);
+            filterAreaGroupBox.Controls.Add(brushRadioButton);
+            filterAreaGroupBox.Controls.Add(brushRadiusTextBox);
             filterAreaGroupBox.Controls.Add(brushRadiusTrackBar);
             filterAreaGroupBox.Controls.Add(wholeAreaRadioButton);
             filterAreaGroupBox.Location = new Point(3, 3);
@@ -493,26 +500,31 @@
             filterAreaGroupBox.TabStop = false;
             filterAreaGroupBox.Text = "Filter application area";
             // 
-            // brushRradioButton
+            // brushRadioButton
             // 
-            brushRradioButton.AutoSize = true;
-            brushRradioButton.Location = new Point(6, 65);
-            brushRradioButton.Name = "brushRradioButton";
-            brushRradioButton.Size = new Size(149, 29);
-            brushRradioButton.TabIndex = 3;
-            brushRradioButton.TabStop = true;
-            brushRradioButton.Text = "Circular brush:";
-            brushRradioButton.UseVisualStyleBackColor = true;
+            brushRadioButton.AutoSize = true;
+            brushRadioButton.Location = new Point(6, 65);
+            brushRadioButton.Name = "brushRadioButton";
+            brushRadioButton.Size = new Size(149, 29);
+            brushRadioButton.TabIndex = 3;
+            brushRadioButton.TabStop = true;
+            brushRadioButton.Text = "Circular brush:";
+            brushRadioButton.UseVisualStyleBackColor = true;
+            brushRadioButton.CheckedChanged += brushRadioButton_CheckedChanged;
             // 
-            // textBox1
+            // brushRadiusTextBox
             // 
-            textBox1.Enabled = false;
-            textBox1.Location = new Point(402, 109);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(52, 31);
-            textBox1.TabIndex = 13;
-            textBox1.Text = "1";
-            textBox1.TextAlign = HorizontalAlignment.Center;
+            brushRadiusTextBox.Enabled = false;
+            brushRadiusTextBox.Location = new Point(371, 100);
+            brushRadiusTextBox.Name = "brushRadiusTextBox";
+            brushRadiusTextBox.Size = new Size(52, 31);
+            brushRadiusTextBox.TabIndex = 13;
+            brushRadiusTextBox.Text = "1";
+            brushRadiusTextBox.TextAlign = HorizontalAlignment.Center;
+            brushRadiusTextBox.Enter += TextBox_Enter;
+            brushRadiusTextBox.KeyPress += integerTextBox_KeyPress;
+            brushRadiusTextBox.Validating += validatingTextBox;
+            brushRadiusTextBox.Validated += brushRadiusTextBox_Validated;
             // 
             // brushRadiusTrackBar
             // 
@@ -521,9 +533,10 @@
             brushRadiusTrackBar.Maximum = 100;
             brushRadiusTrackBar.Minimum = 1;
             brushRadiusTrackBar.Name = "brushRadiusTrackBar";
-            brushRadiusTrackBar.Size = new Size(375, 69);
+            brushRadiusTrackBar.Size = new Size(344, 69);
             brushRadiusTrackBar.TabIndex = 12;
             brushRadiusTrackBar.Value = 1;
+            brushRadiusTrackBar.Scroll += brushRadiusTrackBar_Scroll;
             // 
             // wholeAreaRadioButton
             // 
@@ -536,13 +549,6 @@
             wholeAreaRadioButton.TabStop = true;
             wholeAreaRadioButton.Text = "Whole area";
             wholeAreaRadioButton.UseVisualStyleBackColor = true;
-            // 
-            // chooseImageToolStripMenuItem
-            // 
-            chooseImageToolStripMenuItem.Name = "chooseImageToolStripMenuItem";
-            chooseImageToolStripMenuItem.Size = new Size(270, 34);
-            chooseImageToolStripMenuItem.Text = "Choose image";
-            chooseImageToolStripMenuItem.Click += chooseImageToolStripMenuItem_Click;
             // 
             // ConvolutionFilters
             // 
@@ -608,10 +614,10 @@
         private RadioButton radioButton3;
         private RadioButton radioButton2;
         private RadioButton wholeAreaRadioButton;
-        private TextBox textBox1;
+        private TextBox brushRadiusTextBox;
         private Panel filterMatrixPanel;
         private NumericUpDown numericUpDown00;
-        private RadioButton brushRradioButton;
+        private RadioButton brushRadioButton;
         private NumericUpDown numericUpDown01;
         private NumericUpDown numericUpDown02;
         private NumericUpDown numericUpDown22;

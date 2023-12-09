@@ -3,6 +3,8 @@ namespace ConvolutionFilters
     public partial class ConvolutionFilters : Form
     {
         AppManager appManager;
+        string prevValue = "";
+        private ErrorProvider errorProvider = new();
         public ConvolutionFilters()
         {
             InitializeComponent();
@@ -10,6 +12,7 @@ namespace ConvolutionFilters
                 (float)shiftNumericUpDown.Value, (float)denomNumericUpDown.Value);
         }
 
+        #region PictureBoxes PaintEvents
         private void pictureBox_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.DrawImage(appManager.filteredImage.Bitmap, Point.Empty);
@@ -33,6 +36,9 @@ namespace ConvolutionFilters
                 Point.Empty);
         }
 
+        #endregion
+
+        #region FilterChanges
         private void filterChanged(object sender, EventArgs e)
         {
             if (((RadioButton)sender).Checked)
@@ -42,6 +48,7 @@ namespace ConvolutionFilters
             }
         }
 
+        #region CustomFilter
         private void customFilterChanged(object sender, EventArgs e)
         {
             if (((RadioButton)sender).Checked)
@@ -77,12 +84,14 @@ namespace ConvolutionFilters
             Refresh();
         }
 
+        #endregion
         private void shiftNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
             appManager.SetFilterShift((float)((NumericUpDown)sender).Value);
             Refresh();
         }
 
+        #region Denom
         private void denomNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
             appManager.SetFilterDenom((float)((NumericUpDown)sender).Value);
@@ -99,7 +108,10 @@ namespace ConvolutionFilters
                 denomNumericUpDown.Enabled = true;
             Refresh();
         }
+        #endregion
+        #endregion
 
+        #region Menu (ImageChoice)
         private void chooseImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string dir = Application.StartupPath;
@@ -118,5 +130,91 @@ namespace ConvolutionFilters
                 Refresh();
             }
         }
+
+        #endregion
+
+        #region BrushRadius
+
+        private void brushRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked)
+            {
+                brushRadiusTrackBar.Enabled = true;
+                brushRadiusTextBox.Enabled = true;
+            }
+            else
+            {
+                brushRadiusTrackBar.Enabled = false;
+                brushRadiusTextBox.Enabled = false;
+            }
+        }
+
+        #region TextBox
+
+        private void TextBox_Enter(object sender, EventArgs e)
+        {
+            prevValue = ((TextBox)sender).Text;
+            ((TextBox)sender).Clear();
+        }
+
+        private void integerTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+                (sender as TextBox).Parent.Focus();
+
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void validatingTextBox(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            float min = brushRadiusTrackBar.Minimum, max = brushRadiusTrackBar.Maximum;
+            if (((TextBox)sender).Text == " ")
+                return;
+
+            if (string.IsNullOrEmpty(((TextBox)sender).Text))
+                ((TextBox)sender).Text = prevValue;
+
+            string errorMsg = $"Enter a value between {min} and {max}";
+            try
+            {
+                float result = float.Parse(((TextBox)sender).Text.ToString());
+                if (result > max || result < min)
+                {
+                    e.Cancel = true;
+                    ((TextBox)sender).Select(0, ((TextBox)sender).Text.Length);
+                    this.errorProvider.SetError((TextBox)sender, errorMsg);
+                }
+                else
+                    this.errorProvider.Clear();
+            }
+            catch
+            {
+                e.Cancel = true;
+                this.errorProvider.SetError((TextBox)sender, errorMsg);
+            }
+        }
+
+        private void brushRadiusTextBox_Validated(object sender, EventArgs e)
+        {
+            int result = int.Parse(brushRadiusTextBox.Text.ToString());
+            brushRadiusTrackBar.Value = result;
+
+            Refresh();
+        }
+
+        #endregion
+
+        private void brushRadiusTrackBar_Scroll(object sender, EventArgs e)
+        {
+            int result = (int)brushRadiusTrackBar.Value;
+            brushRadiusTextBox.Text = result.ToString();
+
+            Refresh();
+        }
+
+        #endregion
     }
 }
