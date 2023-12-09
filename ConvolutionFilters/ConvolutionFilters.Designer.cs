@@ -127,9 +127,9 @@
             // statusStrip
             // 
             statusStrip.ImageScalingSize = new Size(24, 24);
-            statusStrip.Location = new Point(0, 883);
+            statusStrip.Location = new Point(0, 889);
             statusStrip.Name = "statusStrip";
-            statusStrip.Size = new Size(1758, 28);
+            statusStrip.Size = new Size(1758, 22);
             statusStrip.TabIndex = 1;
             statusStrip.Text = "statusStrip";
             // 
@@ -147,7 +147,7 @@
             mainTableLayoutPanel.Name = "mainTableLayoutPanel";
             mainTableLayoutPanel.RowCount = 1;
             mainTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            mainTableLayoutPanel.Size = new Size(1758, 850);
+            mainTableLayoutPanel.Size = new Size(1758, 856);
             mainTableLayoutPanel.TabIndex = 2;
             // 
             // pictureBox
@@ -155,7 +155,7 @@
             pictureBox.Dock = DockStyle.Fill;
             pictureBox.Location = new Point(3, 3);
             pictureBox.Name = "pictureBox";
-            pictureBox.Size = new Size(850, 844);
+            pictureBox.Size = new Size(850, 850);
             pictureBox.TabIndex = 0;
             pictureBox.TabStop = false;
             pictureBox.Paint += pictureBox_Paint;
@@ -177,16 +177,16 @@
             histogramsTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             histogramsTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             histogramsTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            histogramsTableLayoutPanel.Size = new Size(424, 844);
+            histogramsTableLayoutPanel.Size = new Size(424, 850);
             histogramsTableLayoutPanel.TabIndex = 1;
             // 
             // blueHistPictureBox
             // 
             blueHistPictureBox.BackColor = Color.White;
             blueHistPictureBox.Dock = DockStyle.Fill;
-            blueHistPictureBox.Location = new Point(3, 425);
+            blueHistPictureBox.Location = new Point(3, 427);
             blueHistPictureBox.Name = "blueHistPictureBox";
-            blueHistPictureBox.Size = new Size(418, 205);
+            blueHistPictureBox.Size = new Size(418, 206);
             blueHistPictureBox.TabIndex = 20;
             blueHistPictureBox.TabStop = false;
             blueHistPictureBox.Paint += blueHistPictureBox_Paint;
@@ -195,9 +195,9 @@
             // 
             greenHistPictureBox.BackColor = Color.White;
             greenHistPictureBox.Dock = DockStyle.Fill;
-            greenHistPictureBox.Location = new Point(3, 214);
+            greenHistPictureBox.Location = new Point(3, 215);
             greenHistPictureBox.Name = "greenHistPictureBox";
-            greenHistPictureBox.Size = new Size(418, 205);
+            greenHistPictureBox.Size = new Size(418, 206);
             greenHistPictureBox.TabIndex = 19;
             greenHistPictureBox.TabStop = false;
             greenHistPictureBox.Paint += greenHistPictureBox_Paint;
@@ -208,7 +208,7 @@
             redHistPictureBox.Dock = DockStyle.Fill;
             redHistPictureBox.Location = new Point(3, 3);
             redHistPictureBox.Name = "redHistPictureBox";
-            redHistPictureBox.Size = new Size(418, 205);
+            redHistPictureBox.Size = new Size(418, 206);
             redHistPictureBox.TabIndex = 18;
             redHistPictureBox.TabStop = false;
             redHistPictureBox.Paint += redHistPictureBox_Paint;
@@ -226,7 +226,7 @@
             parametersTableLayoutPanel1.RowStyles.Add(new RowStyle());
             parametersTableLayoutPanel1.RowStyles.Add(new RowStyle());
             parametersTableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            parametersTableLayoutPanel1.Size = new Size(466, 844);
+            parametersTableLayoutPanel1.Size = new Size(466, 850);
             parametersTableLayoutPanel1.TabIndex = 2;
             // 
             // filterChoiceGroupBox
@@ -280,8 +280,8 @@
             // 
             shiftNumericUpDown.DecimalPlaces = 2;
             shiftNumericUpDown.Location = new Point(319, 380);
-            shiftNumericUpDown.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
-            shiftNumericUpDown.Minimum = new decimal(new int[] { 50, 0, 0, int.MinValue });
+            shiftNumericUpDown.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            shiftNumericUpDown.Minimum = new decimal(new int[] { 255, 0, 0, int.MinValue });
             shiftNumericUpDown.Name = "shiftNumericUpDown";
             shiftNumericUpDown.Size = new Size(135, 31);
             shiftNumericUpDown.TabIndex = 16;
