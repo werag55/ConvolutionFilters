@@ -39,8 +39,9 @@
             redHistPictureBox = new PictureBox();
             parametersTableLayoutPanel1 = new TableLayoutPanel();
             filterChoiceGroupBox = new GroupBox();
-            numericUpDown2 = new NumericUpDown();
-            numericUpDown1 = new NumericUpDown();
+            customButton = new Button();
+            denomNumericUpDown = new NumericUpDown();
+            shiftNumericUpDown = new NumericUpDown();
             autoDenomCheckBox = new CheckBox();
             filterDenominatorLabel = new Label();
             filterShiftLabel = new Label();
@@ -65,6 +66,7 @@
             textBox1 = new TextBox();
             brushRadiusTrackBar = new TrackBar();
             wholeAreaRadioButton = new RadioButton();
+            chooseImageToolStripMenuItem = new ToolStripMenuItem();
             menuStrip.SuspendLayout();
             mainTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
@@ -74,8 +76,8 @@
             ((System.ComponentModel.ISupportInitialize)redHistPictureBox).BeginInit();
             parametersTableLayoutPanel1.SuspendLayout();
             filterChoiceGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)denomNumericUpDown).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)shiftNumericUpDown).BeginInit();
             filterMatrixPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown22).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown21).BeginInit();
@@ -102,6 +104,7 @@
             // 
             // fileToolStripMenuItem
             // 
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { chooseImageToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(54, 29);
             fileToolStripMenuItem.Text = "File";
@@ -212,8 +215,9 @@
             // filterChoiceGroupBox
             // 
             filterChoiceGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            filterChoiceGroupBox.Controls.Add(numericUpDown2);
-            filterChoiceGroupBox.Controls.Add(numericUpDown1);
+            filterChoiceGroupBox.Controls.Add(customButton);
+            filterChoiceGroupBox.Controls.Add(denomNumericUpDown);
+            filterChoiceGroupBox.Controls.Add(shiftNumericUpDown);
             filterChoiceGroupBox.Controls.Add(autoDenomCheckBox);
             filterChoiceGroupBox.Controls.Add(filterDenominatorLabel);
             filterChoiceGroupBox.Controls.Add(filterShiftLabel);
@@ -231,23 +235,40 @@
             filterChoiceGroupBox.TabStop = false;
             filterChoiceGroupBox.Text = "Convolution filter choice";
             // 
-            // numericUpDown2
+            // customButton
             // 
-            numericUpDown2.DecimalPlaces = 2;
-            numericUpDown2.Enabled = false;
-            numericUpDown2.Location = new Point(319, 418);
-            numericUpDown2.Name = "numericUpDown2";
-            numericUpDown2.Size = new Size(135, 31);
-            numericUpDown2.TabIndex = 17;
-            numericUpDown2.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            customButton.Enabled = false;
+            customButton.Location = new Point(348, 200);
+            customButton.Name = "customButton";
+            customButton.Size = new Size(106, 34);
+            customButton.TabIndex = 18;
+            customButton.Text = "Apply";
+            customButton.UseVisualStyleBackColor = true;
+            customButton.Click += customButton_Click;
             // 
-            // numericUpDown1
+            // denomNumericUpDown
             // 
-            numericUpDown1.DecimalPlaces = 2;
-            numericUpDown1.Location = new Point(319, 380);
-            numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.Size = new Size(135, 31);
-            numericUpDown1.TabIndex = 16;
+            denomNumericUpDown.DecimalPlaces = 2;
+            denomNumericUpDown.Enabled = false;
+            denomNumericUpDown.Location = new Point(319, 418);
+            denomNumericUpDown.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
+            denomNumericUpDown.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            denomNumericUpDown.Name = "denomNumericUpDown";
+            denomNumericUpDown.Size = new Size(135, 31);
+            denomNumericUpDown.TabIndex = 17;
+            denomNumericUpDown.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            denomNumericUpDown.ValueChanged += denomNumericUpDown_ValueChanged;
+            // 
+            // shiftNumericUpDown
+            // 
+            shiftNumericUpDown.DecimalPlaces = 2;
+            shiftNumericUpDown.Location = new Point(319, 380);
+            shiftNumericUpDown.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
+            shiftNumericUpDown.Minimum = new decimal(new int[] { 50, 0, 0, int.MinValue });
+            shiftNumericUpDown.Name = "shiftNumericUpDown";
+            shiftNumericUpDown.Size = new Size(135, 31);
+            shiftNumericUpDown.TabIndex = 16;
+            shiftNumericUpDown.ValueChanged += shiftNumericUpDown_ValueChanged;
             // 
             // autoDenomCheckBox
             // 
@@ -260,6 +281,7 @@
             autoDenomCheckBox.TabIndex = 15;
             autoDenomCheckBox.Text = "Atomatic determination of the denominator";
             autoDenomCheckBox.UseVisualStyleBackColor = true;
+            autoDenomCheckBox.CheckedChanged += autoDenomCheckBox_CheckedChanged;
             // 
             // filterDenominatorLabel
             // 
@@ -293,7 +315,7 @@
             filterMatrixPanel.Controls.Add(numericUpDown02);
             filterMatrixPanel.Controls.Add(numericUpDown00);
             filterMatrixPanel.Enabled = false;
-            filterMatrixPanel.Location = new Point(50, 240);
+            filterMatrixPanel.Location = new Point(6, 240);
             filterMatrixPanel.Name = "filterMatrixPanel";
             filterMatrixPanel.Size = new Size(436, 124);
             filterMatrixPanel.TabIndex = 12;
@@ -302,71 +324,89 @@
             // 
             numericUpDown22.DecimalPlaces = 2;
             numericUpDown22.Location = new Point(298, 90);
+            numericUpDown22.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
+            numericUpDown22.Minimum = new decimal(new int[] { 50, 0, 0, int.MinValue });
             numericUpDown22.Name = "numericUpDown22";
             numericUpDown22.Size = new Size(135, 31);
-            numericUpDown22.TabIndex = 9;
+            numericUpDown22.TabIndex = 8;
             // 
             // numericUpDown21
             // 
             numericUpDown21.DecimalPlaces = 2;
             numericUpDown21.Location = new Point(149, 90);
+            numericUpDown21.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
+            numericUpDown21.Minimum = new decimal(new int[] { 50, 0, 0, int.MinValue });
             numericUpDown21.Name = "numericUpDown21";
             numericUpDown21.Size = new Size(135, 31);
-            numericUpDown21.TabIndex = 8;
+            numericUpDown21.TabIndex = 7;
             // 
             // numericUpDown20
             // 
             numericUpDown20.DecimalPlaces = 2;
             numericUpDown20.Location = new Point(0, 90);
+            numericUpDown20.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
+            numericUpDown20.Minimum = new decimal(new int[] { 50, 0, 0, int.MinValue });
             numericUpDown20.Name = "numericUpDown20";
             numericUpDown20.Size = new Size(135, 31);
-            numericUpDown20.TabIndex = 7;
+            numericUpDown20.TabIndex = 6;
             // 
             // numericUpDown12
             // 
             numericUpDown12.DecimalPlaces = 2;
             numericUpDown12.Location = new Point(298, 45);
+            numericUpDown12.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
+            numericUpDown12.Minimum = new decimal(new int[] { 50, 0, 0, int.MinValue });
             numericUpDown12.Name = "numericUpDown12";
             numericUpDown12.Size = new Size(135, 31);
-            numericUpDown12.TabIndex = 6;
+            numericUpDown12.TabIndex = 5;
             // 
             // numericUpDown11
             // 
             numericUpDown11.DecimalPlaces = 2;
             numericUpDown11.Location = new Point(149, 45);
+            numericUpDown11.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
+            numericUpDown11.Minimum = new decimal(new int[] { 50, 0, 0, int.MinValue });
             numericUpDown11.Name = "numericUpDown11";
             numericUpDown11.Size = new Size(135, 31);
-            numericUpDown11.TabIndex = 5;
+            numericUpDown11.TabIndex = 4;
             // 
             // numericUpDown10
             // 
             numericUpDown10.DecimalPlaces = 2;
             numericUpDown10.Location = new Point(0, 45);
+            numericUpDown10.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
+            numericUpDown10.Minimum = new decimal(new int[] { 50, 0, 0, int.MinValue });
             numericUpDown10.Name = "numericUpDown10";
             numericUpDown10.Size = new Size(135, 31);
-            numericUpDown10.TabIndex = 4;
+            numericUpDown10.TabIndex = 3;
             // 
             // numericUpDown01
             // 
             numericUpDown01.Anchor = AnchorStyles.Top;
             numericUpDown01.DecimalPlaces = 2;
             numericUpDown01.Location = new Point(151, 0);
+            numericUpDown01.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
+            numericUpDown01.Minimum = new decimal(new int[] { 50, 0, 0, int.MinValue });
             numericUpDown01.Name = "numericUpDown01";
             numericUpDown01.Size = new Size(135, 31);
-            numericUpDown01.TabIndex = 2;
+            numericUpDown01.TabIndex = 1;
             // 
             // numericUpDown02
             // 
             numericUpDown02.DecimalPlaces = 2;
             numericUpDown02.Location = new Point(298, 0);
+            numericUpDown02.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
+            numericUpDown02.Minimum = new decimal(new int[] { 50, 0, 0, int.MinValue });
             numericUpDown02.Name = "numericUpDown02";
             numericUpDown02.Size = new Size(135, 31);
-            numericUpDown02.TabIndex = 3;
+            numericUpDown02.TabIndex = 2;
             // 
             // numericUpDown00
             // 
             numericUpDown00.DecimalPlaces = 3;
             numericUpDown00.Location = new Point(0, 0);
+            numericUpDown00.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
+            numericUpDown00.Minimum = new decimal(new int[] { 50, 0, 0, int.MinValue });
             numericUpDown00.Name = "numericUpDown00";
             numericUpDown00.Size = new Size(135, 31);
             numericUpDown00.TabIndex = 0;
@@ -437,7 +477,7 @@
             customRadioButton.TabIndex = 6;
             customRadioButton.Text = "Custom";
             customRadioButton.UseVisualStyleBackColor = true;
-            customRadioButton.CheckedChanged += filterChanged;
+            customRadioButton.CheckedChanged += customFilterChanged;
             // 
             // filterAreaGroupBox
             // 
@@ -497,6 +537,12 @@
             wholeAreaRadioButton.Text = "Whole area";
             wholeAreaRadioButton.UseVisualStyleBackColor = true;
             // 
+            // chooseImageToolStripMenuItem
+            // 
+            chooseImageToolStripMenuItem.Name = "chooseImageToolStripMenuItem";
+            chooseImageToolStripMenuItem.Size = new Size(270, 34);
+            chooseImageToolStripMenuItem.Text = "Choose image";
+            // 
             // ConvolutionFilters
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -521,8 +567,8 @@
             parametersTableLayoutPanel1.ResumeLayout(false);
             filterChoiceGroupBox.ResumeLayout(false);
             filterChoiceGroupBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)denomNumericUpDown).EndInit();
+            ((System.ComponentModel.ISupportInitialize)shiftNumericUpDown).EndInit();
             filterMatrixPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numericUpDown22).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown21).EndInit();
@@ -579,7 +625,9 @@
         private PictureBox blueHistPictureBox;
         private PictureBox greenHistPictureBox;
         private PictureBox redHistPictureBox;
-        private NumericUpDown numericUpDown2;
-        private NumericUpDown numericUpDown1;
+        private NumericUpDown denomNumericUpDown;
+        private NumericUpDown shiftNumericUpDown;
+        private Button customButton;
+        private ToolStripMenuItem chooseImageToolStripMenuItem;
     }
 }
