@@ -99,5 +99,24 @@ namespace ConvolutionFilters
                 denomNumericUpDown.Enabled = true;
             Refresh();
         }
+
+        private void chooseImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string dir = Application.StartupPath;
+            for (int i = 0; i < 2; i++)
+                dir = Directory.GetParent(dir).Parent.FullName;
+            string imagesDirectory = Path.Combine(dir, "Images");
+
+
+            OpenFileDialog openFileDialog = new();
+            openFileDialog.InitialDirectory = imagesDirectory;
+            openFileDialog.Filter = "Images (*.jpg, *.jpeg, *.png, *.gif)|*.jpg;*.jpeg;*.png;*.gif";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                appManager.SetImage(openFileDialog.FileName);
+                Refresh();
+            }
+        }
     }
 }

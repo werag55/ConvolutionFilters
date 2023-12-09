@@ -542,6 +542,7 @@
             chooseImageToolStripMenuItem.Name = "chooseImageToolStripMenuItem";
             chooseImageToolStripMenuItem.Size = new Size(270, 34);
             chooseImageToolStripMenuItem.Text = "Choose image";
+            chooseImageToolStripMenuItem.Click += chooseImageToolStripMenuItem_Click;
             // 
             // ConvolutionFilters
             // 
