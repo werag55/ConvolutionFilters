@@ -20,6 +20,15 @@ namespace ConvolutionFilters
         private void pictureBox_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.DrawImage(appManager.filteredImage.Bitmap, Point.Empty);
+
+            if (appManager.area == Area.Circular 
+                && appManager.circleX != -1)
+            {
+                int x = appManager.circleX - appManager.radius;
+                int y = appManager.circleY - appManager.radius;
+                int diameter = 2 * appManager.radius;
+                e.Graphics.DrawEllipse(Pens.Black, x, y, diameter, diameter);
+            }
         }
 
         private void redHistPictureBox_Paint(object sender, PaintEventArgs e)

@@ -15,8 +15,9 @@ namespace ConvolutionFilters
     public class AppManager
     {
         int imageWidth, imageHeight;
-        int circleX = -1, circleY = -1;
-        int radius = 1;
+        public int circleX { get; private set; } = -1;
+        public int circleY { get; private set; } = -1;
+        public int radius { get; private set; } = 1;
         public Area area { get; private set; } = Area.Whole;
         ConvolutionFilter currentFilter;
         float filterShift;
@@ -106,11 +107,11 @@ namespace ConvolutionFilters
                     break;
                 case Area.Circular:
                     if (circleX != -1 && circleY != -1)
-                        filteredImage = currentFilter.ApplyCircularFilter(originalImage, circleX, circleY, radius,
+                        currentFilter.ApplyCircularFilter(originalImage, filteredImage, circleX, circleY, radius,
                             filterShift, filterDenom, histograms);
                     else
                     {
-                        filteredImage = originalImage;
+                        //filteredImage = originalImage; // if brush == window
                         CalculateHistograms();
                     }
                     break;

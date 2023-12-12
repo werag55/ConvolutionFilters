@@ -94,11 +94,41 @@ namespace ConvolutionFilters
             return distanceSquared <= radius * radius;
         }
 
-        public DirectBitmap ApplyCircularFilter(DirectBitmap image, int centerX, int centerY, int radius, 
+        // if brush == window that we can see filter through
+        //public DirectBitmap ApplyCircularFilter(DirectBitmap image, int centerX, int centerY, int radius, 
+        //    float filterShift = 0, float filterDenom = 1, Histogram[]? histograms = null)
+        //{
+        //    DirectBitmap filteredImage = new DirectBitmap(image.Width, image.Height);
+
+        //    int imageWidth = image.Width;
+        //    int imageHeight = image.Height;
+
+        //    for (int y = 0; y < imageHeight; y++)
+        //    {
+        //        for (int x = 0; x < imageWidth; x++)
+        //        {
+        //            if (IsInsideCircle(x, y, centerX, centerY, radius))
+        //                filteredImage.SetPixel(x, y, GetFilteredPixel(x, y, image, filterShift, filterDenom, histograms));
+        //            else
+        //            {
+        //                Color color = image.GetPixel(x, y);
+        //                filteredImage.SetPixel(x, y, color);
+        //                if (histograms != null)
+        //                {
+        //                    histograms[0].Add(color.R);
+        //                    histograms[1].Add(color.G);
+        //                    histograms[2].Add(color.B);
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return filteredImage;
+        //}
+
+        public void ApplyCircularFilter(DirectBitmap image, DirectBitmap filteredImage, int centerX, int centerY, int radius,
             float filterShift = 0, float filterDenom = 1, Histogram[]? histograms = null)
         {
-            DirectBitmap filteredImage = new DirectBitmap(image.Width, image.Height);
-
             int imageWidth = image.Width;
             int imageHeight = image.Height;
 
@@ -110,8 +140,7 @@ namespace ConvolutionFilters
                         filteredImage.SetPixel(x, y, GetFilteredPixel(x, y, image, filterShift, filterDenom, histograms));
                     else
                     {
-                        Color color = image.GetPixel(x, y);
-                        filteredImage.SetPixel(x, y, color);
+                        Color color = filteredImage.GetPixel(x, y);
                         if (histograms != null)
                         {
                             histograms[0].Add(color.R);
@@ -121,8 +150,6 @@ namespace ConvolutionFilters
                     }
                 }
             }
-
-            return filteredImage;
         }
     }
 }
