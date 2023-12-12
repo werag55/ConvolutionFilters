@@ -32,6 +32,8 @@
             fileToolStripMenuItem = new ToolStripMenuItem();
             chooseImageToolStripMenuItem = new ToolStripMenuItem();
             saveImageToolStripMenuItem = new ToolStripMenuItem();
+            generate1ToolStripMenuItem = new ToolStripMenuItem();
+            generate2ToolStripMenuItem = new ToolStripMenuItem();
             statusStrip = new StatusStrip();
             mainTableLayoutPanel = new TableLayoutPanel();
             pictureBox = new PictureBox();
@@ -68,6 +70,7 @@
             brushRadiusTextBox = new TextBox();
             brushRadiusTrackBar = new TrackBar();
             wholeAreaRadioButton = new RadioButton();
+            updateImageToolStripMenuItem = new ToolStripMenuItem();
             menuStrip.SuspendLayout();
             mainTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
@@ -105,7 +108,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { chooseImageToolStripMenuItem, saveImageToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { chooseImageToolStripMenuItem, saveImageToolStripMenuItem, generate1ToolStripMenuItem, generate2ToolStripMenuItem, updateImageToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(54, 29);
             fileToolStripMenuItem.Text = "File";
@@ -113,16 +116,30 @@
             // chooseImageToolStripMenuItem
             // 
             chooseImageToolStripMenuItem.Name = "chooseImageToolStripMenuItem";
-            chooseImageToolStripMenuItem.Size = new Size(228, 34);
+            chooseImageToolStripMenuItem.Size = new Size(270, 34);
             chooseImageToolStripMenuItem.Text = "Choose image";
             chooseImageToolStripMenuItem.Click += chooseImageToolStripMenuItem_Click;
             // 
             // saveImageToolStripMenuItem
             // 
             saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
-            saveImageToolStripMenuItem.Size = new Size(228, 34);
+            saveImageToolStripMenuItem.Size = new Size(270, 34);
             saveImageToolStripMenuItem.Text = "Save image";
             saveImageToolStripMenuItem.Click += saveImageToolStripMenuItem_Click;
+            // 
+            // generate1ToolStripMenuItem
+            // 
+            generate1ToolStripMenuItem.Name = "generate1ToolStripMenuItem";
+            generate1ToolStripMenuItem.Size = new Size(270, 34);
+            generate1ToolStripMenuItem.Text = "Generate1";
+            generate1ToolStripMenuItem.Click += generate1ToolStripMenuItem_Click;
+            // 
+            // generate2ToolStripMenuItem
+            // 
+            generate2ToolStripMenuItem.Name = "generate2ToolStripMenuItem";
+            generate2ToolStripMenuItem.Size = new Size(270, 34);
+            generate2ToolStripMenuItem.Text = "Generate2";
+            generate2ToolStripMenuItem.Click += generate2ToolStripMenuItem_Click;
             // 
             // statusStrip
             // 
@@ -560,6 +577,13 @@
             wholeAreaRadioButton.Text = "Whole area";
             wholeAreaRadioButton.UseVisualStyleBackColor = true;
             // 
+            // updateImageToolStripMenuItem
+            // 
+            updateImageToolStripMenuItem.Name = "updateImageToolStripMenuItem";
+            updateImageToolStripMenuItem.Size = new Size(270, 34);
+            updateImageToolStripMenuItem.Text = "Update image";
+            updateImageToolStripMenuItem.Click += updateImageToolStripMenuItem_Click;
+            // 
             // ConvolutionFilters
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -651,5 +675,8 @@
         private Button customButton;
         private ToolStripMenuItem chooseImageToolStripMenuItem;
         private ToolStripMenuItem saveImageToolStripMenuItem;
+        private ToolStripMenuItem generate1ToolStripMenuItem;
+        private ToolStripMenuItem generate2ToolStripMenuItem;
+        private ToolStripMenuItem updateImageToolStripMenuItem;
     }
 }

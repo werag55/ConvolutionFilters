@@ -73,5 +73,32 @@ namespace ConvolutionFilters
             Bitmap.Dispose();
             BitsHandle.Free();
         }
+
+        public void DrawRectangle(int startX, int startY, int width, int height, Color color)
+        {
+            for (int y = startY; y < startY + height && y < Height; y++)
+            {
+                for (int x = startX; x < startX + width && x < Width; x++)
+                {
+                    SetPixel(x, y, color);
+                }
+            }
+        }
+
+        public DirectBitmap Clone()
+        {
+            DirectBitmap clonedBitmap = new DirectBitmap(Width, Height);
+
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    Color pixelColor = GetPixel(x, y);
+                    clonedBitmap.SetPixel(x, y, pixelColor);
+                }
+            }
+
+            return clonedBitmap;
+        }
     }
 }

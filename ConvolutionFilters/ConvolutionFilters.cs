@@ -21,7 +21,7 @@ namespace ConvolutionFilters
         {
             e.Graphics.DrawImage(appManager.filteredImage.Bitmap, Point.Empty);
 
-            if (appManager.area == Area.Circular 
+            if (appManager.area == Area.Circular
                 && appManager.circleX != -1)
             {
                 int x = appManager.circleX - appManager.radius;
@@ -139,6 +139,8 @@ namespace ConvolutionFilters
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+                IdentityRadioButton.Checked = true;
+                wholeAreaRadioButton.Checked = true;
                 appManager.SetImage(openFileDialog.FileName);
                 Refresh();
             }
@@ -162,6 +164,31 @@ namespace ConvolutionFilters
                     imageToSave.Dispose();
                 }
             }
+        }
+
+        private void generate1ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IdentityRadioButton.Checked = true;
+            wholeAreaRadioButton.Checked = true;
+            appManager.SetImageGenerate1();
+            Refresh();
+        }
+
+        private void generate2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IdentityRadioButton.Checked = true;
+            wholeAreaRadioButton.Checked = true;
+            appManager.SetImageGenerate2();
+            Refresh();
+        }
+
+        private void updateImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            appManager.UpdateImage();
+            //IdentityRadioButton.Checked = true;
+            //wholeAreaRadioButton.Checked = true;
+            appManager.SetCircleCenter(-1, -1);
+            Refresh();
         }
 
         #endregion

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static System.Windows.Forms.AxHost;
 
 namespace ConvolutionFilters
 {
@@ -126,6 +128,46 @@ namespace ConvolutionFilters
             ApplyFilter();
         }
 
+        public void SetImageGenerate1()
+        {
+            originalImage = new DirectBitmap(imageWidth, imageHeight);
+
+            originalImage.DrawRectangle(0, 0, imageWidth / 4, imageHeight / 2, Color.Black);
+            originalImage.DrawRectangle(imageWidth / 4, 0, imageWidth / 4, imageHeight / 2, Color.Red);
+            originalImage.DrawRectangle(imageWidth / 2, 0, imageWidth / 4, imageHeight / 2, Color.Green);
+            originalImage.DrawRectangle(3 * imageWidth / 4, 0, imageWidth / 4, imageHeight / 2, Color.Blue);
+
+            originalImage.DrawRectangle(0, imageHeight / 2, imageWidth / 4, imageHeight / 2, Color.White);
+            originalImage.DrawRectangle(imageWidth / 4, imageHeight / 2, imageWidth / 4, imageHeight / 2, Color.Cyan);
+            originalImage.DrawRectangle(imageWidth / 2, imageHeight / 2, imageWidth / 4, imageHeight / 2, Color.Magenta);
+            originalImage.DrawRectangle(3 * imageWidth / 4, imageHeight / 2, imageWidth / 4, imageHeight / 2, Color.Yellow);
+
+            ApplyFilter();
+        }
+
+        public void SetImageGenerate2()
+        {
+            originalImage = new DirectBitmap(imageWidth, imageHeight);
+
+            double v = 1;
+            for (int y = 0; y < imageHeight; y++)
+            {
+                for (int x = 0; x < imageWidth; x++)
+                {
+                    Color color = HSVToRGB((double)x/imageWidth * 360, 1 - (double)y / imageHeight, v);
+                    originalImage.SetPixel(x, y, color);
+                }
+            }
+
+            ApplyFilter();
+        }
+
+        public void UpdateImage()
+        {
+            originalImage = filteredImage.Clone();
+            //ApplyFilter();
+        }
+
         public void SetFilter(string filter)
         {
             filter = Regex.Replace(filter, "[&]", "");
@@ -168,6 +210,8 @@ namespace ConvolutionFilters
                 filterDenom = 0;
                 foreach (var cell in currentFilter.filterMatrix)
                     filterDenom += cell;
+                if (filterDenom == 0)
+                    filterDenom = 1;
             }
             else
                 filterDenom = 1;
@@ -191,6 +235,78 @@ namespace ConvolutionFilters
         {
             radius = r;
             ApplyFilter();
+        }
+
+        // https://www.programmingalgorithms.com/algorithm/hsv-to-rgb/
+        private Color HSVToRGB(double H, double S, double V)
+        {
+            double r = 0, g = 0, b = 0;
+
+            if (S == 0)
+            {
+                r = V;
+                g = V;
+                b = V;
+            }
+            else
+            {
+                int i;
+                double f, p, q, t;
+
+                if (H == 360)
+                    H = 0;
+                else
+                    H = H / 60;
+
+                i = (int)Math.Truncate(H);
+                f = H - i;
+
+                p = V * (1.0 - S);
+                q = V * (1.0 - (S * f));
+                t = V * (1.0 - (S * (1.0 - f)));
+
+                switch (i)
+                {
+                    case 0:
+                        r = V;
+                        g = t;
+                        b = p;
+                        break;
+
+                    case 1:
+                        r = q;
+                        g = V;
+                        b = p;
+                        break;
+
+                    case 2:
+                        r = p;
+                        g = V;
+                        b = t;
+                        break;
+
+                    case 3:
+                        r = p;
+                        g = q;
+                        b = V;
+                        break;
+
+                    case 4:
+                        r = t;
+                        g = p;
+                        b = V;
+                        break;
+
+                    default:
+                        r = V;
+                        g = p;
+                        b = q;
+                        break;
+                }
+
+            }
+
+            return Color.FromArgb((int)(r * 255), (int)(g * 255), (int)(b * 255));
         }
     }
 }
